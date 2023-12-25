@@ -1,44 +1,54 @@
-import React, {useState} from 'react';
+import React, {memo, useCallback, useEffect} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist";
+import {useAppDispatch, useAppSelector} from "./store/store";
+import {addTodolistTC, setTodolistsTC} from "./store/todolistsReducer";
+import {TodolistDomainType, TodolistType} from "./api/api";
+import {AddItemForm} from "./components/AddItemForm/AddItemForm";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+import ButtonAppBar from "./components/ButtonAppBar/ButtonAppBar";
 
-export type FilterType = 'all' | 'active' | 'completed'
 
-type TodolistType = {
-    id: string
-    todoTitle: string
-    filter: FilterType
-}
+export const App = memo(() => {
 
-export const App = () => {
+    const todolists = useAppSelector<TodolistDomainType[]>(state => state.todolists)
+    const dispatch = useAppDispatch()
 
-    const todolistId1 = crypto.randomUUID()
-    const todolistId2 = crypto.randomUUID()
+    useEffect(() => {
+        dispatch(setTodolistsTC())
+    }, []);
 
-    const [todolists, setTodolists] = useState<TodolistType[]>([
-        {id: todolistId1, todoTitle: "Что изучить", filter: 'all'},
-        {id: todolistId2, todoTitle: "Что купить", filter: 'all'},
-    ])
-    const [tasks, setTasks] = useState({
-        [todolistId1]: [
-            {id: crypto.randomUUID(), taskTitle: "HTML", isDone: true},
-            {id: crypto.randomUUID(), taskTitle: "CSS", isDone: true},
-            {id: crypto.randomUUID(), taskTitle: "JS", isDone: true},
-            {id: crypto.randomUUID(), taskTitle: "React", isDone: false},
-            {id: crypto.randomUUID(), taskTitle: "Redux", isDone: false}
-        ],
-        [todolistId2]: [
-            {id: crypto.randomUUID(), taskTitle: "Milk", isDone: true},
-            {id: crypto.randomUUID(), taskTitle: "Chocolate", isDone: false},
-            {id: crypto.randomUUID(), taskTitle: "Bread", isDone: true},
-            {id: crypto.randomUUID(), taskTitle: "Butter", isDone: true},
-            {id: crypto.randomUUID(), taskTitle: "Banana", isDone: false}
-        ]
-    })
+    const addTodolistHandler = useCallback((title: string) => {
+        dispatch(addTodolistTC(title))
+    }, [dispatch, addTodolistTC])
 
     return (
         <div className="App">
-            <Todolist/>
+            <ButtonAppBar/>
+
+            <Container fixed>
+                <Grid container style={{margin: "20px 0", justifyContent: 'center'}}>
+                    <AddItemForm callback={addTodolistHandler}/>
+                </Grid>
+
+                <Grid container spacing={3}>
+                    {todolists.map(todolist => {
+                        return (
+                            <Grid item key={todolist.id}>
+                                <Paper elevation={24} style={{padding: '20px'}}>
+                                    <Todolist
+                                        todolistId={todolist.id}
+                                        title={todolist.title}
+                                        filter={todolist.filter}
+                                    />
+                                </Paper>
+                            </Grid>
+                        )
+                    })}
+                </Grid>
+            </Container>
         </div>
     );
-}
+})
