@@ -18,7 +18,9 @@ export const api = {
         return instance.delete<ResponsType>(`/todo-lists/${todolistId}`)
     },
     updateTodolistTitle(todolistId: string, title: string) {
-        return instance.put<ResponsType>(`/todo-lists/${todolistId}`, {title})
+        return instance.put<ResponsType<{ item: TodolistType }>, AxiosResponse<ResponsType<{ item: TodolistType }>>, {
+            title: string
+        }>(`/todo-lists/${todolistId}`, {title})
     },
     getTasks(todolistId: string) {
         return instance.get<TasksType>(`/todo-lists/${todolistId}/tasks`)
