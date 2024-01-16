@@ -1,10 +1,12 @@
-import React, {FC} from 'react';
+import React, {ChangeEvent, FC} from 'react';
 import {TaskStatuses} from "../../../../store/enums";
 import {TaskType} from "../../../../store/types";
 import Checkbox from "@mui/material/Checkbox";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
+import {EditableSpan} from "../../../UI/EditableSpan/EditableSpan";
+import {useAppDispatch} from "../../../../store/store";
+import {deleteTask, updateTask} from "../../../../store/reducers/tasksReducer";
 
 type PropsType = {
     todolistId: string,
@@ -12,15 +14,30 @@ type PropsType = {
 }
 
 export const Task: FC<PropsType> = ({todolistId, task}) => {
+
+    const dispatch = useAppDispatch()
+
+    const onClickDeleteTaskHandler = () => {
+        dispatch(deleteTask(todolistId, task.id))
+    }
+    const changeTaskTitleHandler = (newTitle: string) => {
+        dispatch(updateTask(todolistId, task.id, {title: newTitle}))
+    }
+    const onChangeTaskStatusHandler = (event: ChangeEvent<HTMLInputElement>) => {
+        dispatch(updateTask(todolistId, task.id, {status: event.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New}))
+    }
+
     return (
         <li>
-            <Checkbox checked={task.status !== TaskStatuses.New}/>
-            <span className={task.status !== TaskStatuses.New ? `task-done` : ''}>{task.title}</span>
-            <Button>
-                <IconButton>
-                    <Delete/>
-                </IconButton>
-            </Button>
+            <Checkbox checked={task.status !== TaskStatuses.New} onChange={onChangeTaskStatusHandler}/>
+            <EditableSpan
+                className={task.status !== TaskStatuses.New ? `task-done` : ''}
+                title={task.title}
+                callback={changeTaskTitleHandler}
+            />
+            <IconButton onClick={onClickDeleteTaskHandler}>
+                <Delete/>
+            </IconButton>
         </li>
     )
 }

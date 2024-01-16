@@ -1,9 +1,11 @@
 import {RequestStatusType} from "../types";
 
 type InitialStateType = typeof initialState
-type setAppStatusACType = ReturnType<typeof setAppStatusAC>
+type SetAppStatusACType = ReturnType<typeof setAppStatusAC>
+type SetErrorACType = ReturnType<typeof setErrorAC>
 type ActionType =
-    | setAppStatusACType
+    | SetAppStatusACType
+    | SetErrorACType
 
 const initialState = {
     isInitialized: false,
@@ -15,6 +17,9 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
         case 'SET-APP-STATUS': {
             return {...state, status: action.status}
         }
+        case "SET-ERROR": {
+            return {...state, error: action.error}
+        }
         default: {
             return state
         }
@@ -22,3 +27,4 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
 }
 
 export const setAppStatusAC = (status: RequestStatusType) => ({type: 'SET-APP-STATUS', status} as const)
+export const setErrorAC = (error: string | null) => ({type: 'SET-ERROR', error} as const)

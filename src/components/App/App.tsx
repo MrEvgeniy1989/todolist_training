@@ -9,6 +9,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import {RequestStatusType} from "../../store/types";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "../Login/Login";
+import {ErrorSnackbar} from "../UI/ErrorSnackbar/ErrorSnackbar";
 
 
 export const App = () => {
@@ -20,6 +21,7 @@ export const App = () => {
 
     return (
         <div className="App">
+            <ErrorSnackbar/>
             <ButtonAppBar/>
             {status === 'loading' && <LinearProgress color="secondary"/>}
             <Container fixed>

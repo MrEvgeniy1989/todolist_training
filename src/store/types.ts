@@ -12,7 +12,6 @@ export type TodolistDomainType = TodolistType & {
     filter: FilterType
     entityStatus: RequestStatusType
 }
-
 export type TaskType = {
     description: string
     title: string
@@ -39,7 +38,6 @@ export type ResponseType<T = {}> = {
     messages: string[],
     data: T
 }
-
 export type UpdateTaskModelType = {
     title: string
     description: string
@@ -48,7 +46,7 @@ export type UpdateTaskModelType = {
     startDate: string
     deadline: string
 }
-
+export type DomainModelType = Partial<UpdateTaskModelType>
 export type UserType = {
     id: number,
     email: string,

@@ -10,7 +10,7 @@ export const TodolistList = () => {
     return (
         <div>
             <Grid container>
-                {/*<AddItemForm/>*/}
+                {/*<AddItemForm callback={() => {}}/>*/}
             </Grid>
             <Grid container>
                 {todolists.map(todolist => {
