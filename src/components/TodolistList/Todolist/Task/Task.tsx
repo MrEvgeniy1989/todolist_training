@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
-import {TaskStatuses} from "../../enums";
-import {TaskType} from "../../types";
+import {TaskStatuses} from "../../../../store/enums";
+import {TaskType} from "../../../../store/types";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";

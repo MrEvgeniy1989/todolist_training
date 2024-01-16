@@ -1,7 +1,7 @@
 import React from 'react';
-import {Todolist} from "../../../Todolist";
-import {useAppSelector} from "../../store";
-import {TodolistDomainType} from "../../types";
+import {Todolist} from "./Todolist/Todolist";
+import {useAppSelector} from "../../store/store";
+import {TodolistDomainType} from "../../store/types";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 

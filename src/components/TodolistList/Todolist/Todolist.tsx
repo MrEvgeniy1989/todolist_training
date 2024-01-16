@@ -1,14 +1,13 @@
 import React, {FC} from 'react';
-import {FilterType, RequestStatusType, TaskType, TodolistDomainType} from "./store/types";
-import {useAppDispatch, useAppSelector} from "./store/store";
-import {TaskStatuses} from "./store/enums";
+import {FilterType, RequestStatusType, TaskType} from "../../../store/types";
+import {useAppDispatch, useAppSelector} from "../../../store/store";
 import Button from "@mui/material/Button";
-import {AddItemForm} from "./store/components/AddItemForm/AddItemForm";
-import {Task} from "./store/components/Task/Task";
+import {AddItemForm} from "../../UI/AddItemForm/AddItemForm";
+import {Task} from "./Task/Task";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
-import {EditableSpan} from "./store/components/EditableSpan/EditableSpan";
-import {updateTodolistTitle} from "./store/reducers/todolistsReducer";
+import {EditableSpan} from "../../UI/EditableSpan/EditableSpan";
+import {updateTodolistTitle} from "../../../store/reducers/todolistsReducer";
 
 type PropsType = {
     todolistId: string
@@ -34,11 +33,13 @@ export const Todolist: FC<PropsType> = ({todolistId, todolistTitle, filter, enti
 
             <AddItemForm/>
             <ul>
-                {tasks.map(task => {
-                    return (
-                        <Task key={task.id} todolistId={todolistId} task={task}/>
-                    )
-                })}
+                {!tasks.length
+                    ? <span>Список задач пуст!</span>
+                    : tasks.map(task => {
+                        return (
+                            <Task key={task.id} todolistId={todolistId} task={task}/>
+                        )
+                    })}
             </ul>
             <div>
                 <Button variant={filter === 'all' ? 'contained' : 'outlined'}>All</Button>

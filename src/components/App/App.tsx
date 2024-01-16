@@ -1,14 +1,14 @@
 import React, {useEffect} from 'react';
 import './App.css';
-import {TodolistList} from "./store/components/TodolistList/TodolistList";
-import {useAppDispatch, useAppSelector} from "./store/store";
-import {getTodolists} from "./store/reducers/todolistsReducer";
-import ButtonAppBar from "./store/components/ButtonAppBar/ButtonAppBar";
+import {TodolistList} from "../TodolistList/TodolistList";
+import {useAppDispatch, useAppSelector} from "../../store/store";
+import {getTodolists} from "../../store/reducers/todolistsReducer";
+import ButtonAppBar from "../UI/ButtonAppBar/ButtonAppBar";
 import Container from "@mui/material/Container";
 import LinearProgress from "@mui/material/LinearProgress";
-import {RequestStatusType} from "./store/types";
+import {RequestStatusType} from "../../store/types";
 import {Navigate, Route, Routes} from "react-router-dom";
-import {Login} from "./store/components/Login/Login";
+import {Login} from "../Login/Login";
 
 
 export const App = () => {

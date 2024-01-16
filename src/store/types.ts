@@ -39,3 +39,18 @@ export type ResponseType<T = {}> = {
     messages: string[],
     data: T
 }
+
+export type UpdateTaskModelType = {
+    title: string
+    description: string
+    status: TaskStatuses
+    priority: TaskPriorities
+    startDate: string
+    deadline: string
+}
+
+export type UserType = {
+    id: number,
+    email: string,
+    login: string
+}

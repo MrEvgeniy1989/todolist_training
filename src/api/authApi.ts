@@ -1,4 +1,6 @@
 import {instance} from "./api";
+import {ResponseType, UserType} from "../store/types";
+import {AxiosResponse} from "axios";
 
 // Types
 type LoginType = {
@@ -10,12 +12,14 @@ type LoginType = {
 
 export const authApi = {
     me() {
-        return instance.get(`/auth/me`)
+        return instance.get<ResponseType<UserType>>(`/auth/me`)
     },
     login(data: LoginType) {
-        return instance.post(`/auth/login`, data)
+        return instance.post<ResponseType<{ userId: number }>, AxiosResponse<ResponseType<{
+            userId: number
+        }>>, LoginType>(`/auth/login`, data)
     },
     logOut() {
-        return instance.delete(`/auth/login`)
+        return instance.delete<ResponseType>(`/auth/login`)
     }
 }
