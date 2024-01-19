@@ -7,7 +7,7 @@ import {Task} from "./Task/Task";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
 import {EditableSpan} from "../../UI/EditableSpan/EditableSpan";
-import {changeTodolistFilterAC, updateTodolistTitle} from "../../../store/reducers/todolistsReducer";
+import {changeTodolistFilterAC, deleteTodolist, updateTodolistTitle} from "../../../store/reducers/todolistsReducer";
 import {addTaskTC} from "../../../store/reducers/tasksReducer";
 import {TaskStatuses} from "../../../store/enums";
 
@@ -23,6 +23,9 @@ export const Todolist: FC<PropsType> = ({todolistId, todolistTitle, filter, enti
     const dispatch = useAppDispatch()
 
 
+    const onClickDeleteTodolistHandler = () => {
+        dispatch(deleteTodolist(todolistId))
+    }
     const addTask = (title: string) => {
         dispatch(addTaskTC(todolistId, title))
     }
@@ -49,7 +52,7 @@ export const Todolist: FC<PropsType> = ({todolistId, todolistTitle, filter, enti
     return (
         <div className={'todolist'}>
             <EditableSpan className={'todolistTitle'} title={todolistTitle} callback={changeTodolistTitleHandler}/>
-            <IconButton aria-label="delete" disabled={entityStatus === 'loading'}>
+            <IconButton aria-label="delete" disabled={entityStatus === 'loading'} onClick={onClickDeleteTodolistHandler}>
                 <Delete/>
             </IconButton>
 

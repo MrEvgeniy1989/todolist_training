@@ -1,7 +1,7 @@
 import {DomainModelType, TasksStateType, TaskType, UpdateTaskModelType} from "../types";
 import {Dispatch} from "redux";
 import {setAppStatusAC} from "./appReducer";
-import {SetTodolistsACType} from "./todolistsReducer";
+import {AddTodolistACType, DeleteTodolistACType, SetTodolistsACType} from "./todolistsReducer";
 import {tasksApi} from "../../api/tasksApi";
 import {ResultCode} from "../enums";
 import {AppRootStateType} from "../store";
@@ -16,6 +16,8 @@ type ActionType =
     | UpdateTaskACType
     | DeleteTaskACType
     | AddTaskACType
+    | AddTodolistACType
+    | DeleteTodolistACType
 
 const initialState: TasksStateType = {}
 export const tasksReducer = (state: TasksStateType = initialState, action: ActionType): TasksStateType => {
@@ -39,6 +41,14 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
                 ...state,
                 [action.todolistId]: state[action.todolistId].map(task => task.id === action.taskId ? action.task : task)
             }
+        }
+        case "ADD-TODOLIST": {
+            return {...state, [action.todolist.id]: []}
+        }
+        case "DELETE-TODOLIST": {
+            const copyState = {...state}
+            delete copyState[action.todolistId]
+            return copyState
         }
         default: {
             return state

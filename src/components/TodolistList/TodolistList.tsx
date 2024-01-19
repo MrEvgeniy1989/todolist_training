@@ -1,18 +1,26 @@
 import React from 'react';
 import {Todolist} from "./Todolist/Todolist";
-import {useAppSelector} from "../../store/store";
+import {useAppDispatch, useAppSelector} from "../../store/store";
 import {TodolistDomainType} from "../../store/types";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
+import {AddItemForm} from "../UI/AddItemForm/AddItemForm";
+import {addTodolistTC} from "../../store/reducers/todolistsReducer";
 
 export const TodolistList = () => {
     const todolists = useAppSelector<TodolistDomainType[]>(state => state.todolists)
+    const dispatch = useAppDispatch()
+
+    const addTodolist = (title: string) => {
+        dispatch(addTodolistTC(title))
+    }
+
     return (
         <div>
-            <Grid container>
-                {/*<AddItemForm callback={() => {}}/>*/}
+            <Grid container justifyContent={'center'} margin={'20px 0'}>
+                <AddItemForm callback={addTodolist}/>
             </Grid>
-            <Grid container>
+            <Grid container justifyContent={'center'}>
                 {todolists.map(todolist => {
                     return (
                         <Grid item style={{margin: '20px'}} key={todolist.id}>

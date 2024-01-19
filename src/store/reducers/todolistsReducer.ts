@@ -7,10 +7,14 @@ import {getTasks} from "./tasksReducer";
 export type SetTodolistsACType = ReturnType<typeof setTodolistsAC>
 export type UpdateTodolistTitleACType = ReturnType<typeof updateTodolistTitleAC>
 export type ChangeTodolistFilterACType = ReturnType<typeof changeTodolistFilterAC>
+export type AddTodolistACType = ReturnType<typeof addTodolistAC>
+export type DeleteTodolistACType = ReturnType<typeof deleteTodolistAC>
 type ActionType =
     | SetTodolistsACType
     | UpdateTodolistTitleACType
     | ChangeTodolistFilterACType
+    | AddTodolistACType
+    | DeleteTodolistACType
 
 const initialState: TodolistDomainType[] = []
 export const todolistsReducer = (state: TodolistDomainType[] = initialState, action: ActionType): TodolistDomainType[] => {
@@ -27,6 +31,13 @@ export const todolistsReducer = (state: TodolistDomainType[] = initialState, act
                 title: action.newTitle
             } : todolist)
         }
+        case "ADD-TODOLIST": {
+            const newTodolist: TodolistDomainType = {...action.todolist, filter: 'all', entityStatus: 'idle'}
+            return [newTodolist, ...state]
+        }
+        case "DELETE-TODOLIST": {
+            return state.filter(todolist => todolist.id !== action.todolistId)
+        }
         default: {
             return state
         }
@@ -35,6 +46,8 @@ export const todolistsReducer = (state: TodolistDomainType[] = initialState, act
 
 // ActionCreators
 const setTodolistsAC = (todolists: TodolistType[]) => ({type: 'SET-TODOLISTS', todolists} as const)
+const addTodolistAC = (todolist: TodolistType) => ({type: 'ADD-TODOLIST', todolist} as const)
+const deleteTodolistAC = (todolistId: string) => ({type: 'DELETE-TODOLIST', todolistId} as const)
 const updateTodolistTitleAC = (todolistId: string, newTitle: string) => ({
     type: 'UPDATE-TODOLIST-TITLE',
     todolistId,
@@ -58,6 +71,38 @@ export const getTodolists = () => async (dispatch: Dispatch<any>) => {
         todolists.forEach(todolist => {
             dispatch(getTasks(todolist.id))
         })
+    } catch (error: any) {
+        dispatch(setAppStatusAC('failed'))
+    }
+
+}
+export const addTodolistTC = (title: string) => async (dispatch: Dispatch<any>) => {
+    dispatch(setAppStatusAC('loading'))
+
+    try {
+        const response = await todolistsApi.createTodolist(title)
+        if (response.data.resultCode === 0) {
+            dispatch(addTodolistAC(response.data.data.item))
+            dispatch(setAppStatusAC('succeeded'))
+        } else {
+            dispatch(setAppStatusAC('failed'))
+        }
+    } catch (error: any) {
+        dispatch(setAppStatusAC('failed'))
+    }
+
+}
+export const deleteTodolist = (todolistId: string) => async (dispatch: Dispatch<any>) => {
+    dispatch(setAppStatusAC('loading'))
+
+    try {
+        const response = await todolistsApi.deleteTodolist(todolistId)
+        if (response.data.resultCode === 0) {
+        dispatch(deleteTodolistAC(todolistId))
+        dispatch(setAppStatusAC('succeeded'))
+        } else {
+            dispatch(setAppStatusAC('failed'))
+        }
     } catch (error: any) {
         dispatch(setAppStatusAC('failed'))
     }
