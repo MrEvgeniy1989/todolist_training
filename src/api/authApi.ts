@@ -3,7 +3,7 @@ import {ResponseType, UserType} from "../store/types";
 import {AxiosResponse} from "axios";
 
 // Types
-type LoginType = {
+export type LoginType = {
     email: string,
     password: string,
     rememberMe: boolean,

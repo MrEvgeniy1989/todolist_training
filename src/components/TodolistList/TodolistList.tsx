@@ -1,18 +1,28 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Todolist} from "./Todolist/Todolist";
 import {useAppDispatch, useAppSelector} from "../../store/store";
 import {TodolistDomainType} from "../../store/types";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import {AddItemForm} from "../UI/AddItemForm/AddItemForm";
-import {addTodolistTC} from "../../store/reducers/todolistsReducer";
+import {addTodolistTC, getTodolists} from "../../store/reducers/todolistsReducer";
+import {Navigate} from "react-router-dom";
 
 export const TodolistList = () => {
     const todolists = useAppSelector<TodolistDomainType[]>(state => state.todolists)
+    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
     const dispatch = useAppDispatch()
 
     const addTodolist = (title: string) => {
         dispatch(addTodolistTC(title))
+    }
+
+    useEffect(() => {
+        dispatch(getTodolists())
+    }, [dispatch]);
+
+    if (!isLoggedIn) {
+        return <Navigate to={'/login'}/>
     }
 
     return (

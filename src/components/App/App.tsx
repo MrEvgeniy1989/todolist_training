@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import './App.css';
 import {TodolistList} from "../TodolistList/TodolistList";
 import {useAppDispatch, useAppSelector} from "../../store/store";
-import {getTodolists} from "../../store/reducers/todolistsReducer";
 import ButtonAppBar from "../UI/ButtonAppBar/ButtonAppBar";
 import Container from "@mui/material/Container";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -10,14 +9,25 @@ import {RequestStatusType} from "../../store/types";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "../Login/Login";
 import {ErrorSnackbar} from "../UI/ErrorSnackbar/ErrorSnackbar";
+import {meTC} from "../../store/reducers/authReducer";
+import {CircularProgress} from "@mui/material";
 
 
 export const App = () => {
     const status = useAppSelector<RequestStatusType>(state => state.app.status)
+    const isInitialized = useAppSelector<boolean>(state => state.app.isInitialized)
     const dispatch = useAppDispatch()
+
     useEffect(() => {
-        dispatch(getTodolists())
-    }, [dispatch]);
+        dispatch(meTC())
+    }, []);
+
+    if (!isInitialized) {
+        return <div
+            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress/>
+        </div>
+    }
 
     return (
         <div className="App">
