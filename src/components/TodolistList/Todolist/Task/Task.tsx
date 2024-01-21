@@ -1,6 +1,6 @@
 import React, {ChangeEvent, FC} from 'react';
 import {TaskStatuses} from "../../../../store/enums";
-import {TaskType} from "../../../../store/types";
+import {TaskDomainType} from "../../../../store/types";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
@@ -10,7 +10,7 @@ import {deleteTask, updateTask} from "../../../../store/reducers/tasksReducer";
 
 type PropsType = {
     todolistId: string,
-    task: TaskType
+    task: TaskDomainType
 }
 
 export const Task: FC<PropsType> = ({todolistId, task}) => {
@@ -29,13 +29,14 @@ export const Task: FC<PropsType> = ({todolistId, task}) => {
 
     return (
         <li>
-            <Checkbox checked={task.status !== TaskStatuses.New} onChange={onChangeTaskStatusHandler}/>
+            <Checkbox checked={task.status !== TaskStatuses.New} onChange={onChangeTaskStatusHandler} disabled={task.entityStatus === 'loading'}/>
             <EditableSpan
                 className={task.status !== TaskStatuses.New ? `task-done` : ''}
                 title={task.title}
                 callback={changeTaskTitleHandler}
+                disabled={task.entityStatus === 'loading'}
             />
-            <IconButton onClick={onClickDeleteTaskHandler}>
+            <IconButton onClick={onClickDeleteTaskHandler} disabled={task.entityStatus === 'loading'}>
                 <Delete/>
             </IconButton>
         </li>

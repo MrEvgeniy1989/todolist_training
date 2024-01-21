@@ -25,13 +25,16 @@ export type TaskType = {
     order: number
     addedDate: string
 }
+export type TaskDomainType = TaskType & {
+    entityStatus: RequestStatusType
+}
 export type TasksType = {
     items: TaskType[],
     totalCount: number,
     error: string | null
 }
 export type TasksStateType = {
-    [key: string]: TaskType[]
+    [key: string]: TaskDomainType[]
 }
 export type ResponseType<T = {}> = {
     resultCode: ResultCode
@@ -51,4 +54,9 @@ export type UserType = {
     id: number,
     email: string,
     login: string
+}
+export type ErrorType = {
+    statusCode: number,
+    messages: string[],
+    error: string
 }

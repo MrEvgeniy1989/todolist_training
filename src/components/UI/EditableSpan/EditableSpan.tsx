@@ -5,9 +5,10 @@ type PropsType = {
     className: string
     title: string
     callback: (title: string) => void
+    disabled?: boolean
 }
 
-export const EditableSpan: FC<PropsType> = ({className, title, callback}) => {
+export const EditableSpan: FC<PropsType> = ({className, title, callback, disabled}) => {
     const [edit, setEdit] = useState(false)
     const [newTitle, setNewTitle] = useState(title)
 
@@ -19,13 +20,16 @@ export const EditableSpan: FC<PropsType> = ({className, title, callback}) => {
             callback(newTitle)
             setEdit(false)
         } else {
-            setEdit(true)
+            if (!disabled) {
+                setEdit(true)
+            }
         }
     }
 
     return (
         edit
-            ? <TextField size={"small"} variant={'standard'} value={newTitle} onChange={onChangeNewTitle} onBlur={changeEdit} autoFocus/>
+            ? <TextField size={"small"} variant={'standard'} value={newTitle} onChange={onChangeNewTitle}
+                         onBlur={changeEdit} autoFocus disabled={disabled}/>
             : <span className={className} onDoubleClick={changeEdit}>{title}</span>
     )
 }

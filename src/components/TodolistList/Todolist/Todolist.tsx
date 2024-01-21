@@ -1,5 +1,5 @@
 import React, {FC, useMemo} from 'react';
-import {FilterType, RequestStatusType, TaskType} from "../../../store/types";
+import {FilterType, RequestStatusType, TaskDomainType} from "../../../store/types";
 import {useAppDispatch, useAppSelector} from "../../../store/store";
 import Button from "@mui/material/Button";
 import {AddItemForm} from "../../UI/AddItemForm/AddItemForm";
@@ -19,7 +19,7 @@ type PropsType = {
 }
 
 export const Todolist: FC<PropsType> = ({todolistId, todolistTitle, filter, entityStatus}) => {
-    let tasks = useAppSelector<TaskType[]>(state => state.tasks[todolistId])
+    let tasks = useAppSelector<TaskDomainType[]>(state => state.tasks[todolistId])
     const dispatch = useAppDispatch()
 
 

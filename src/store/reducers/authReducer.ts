@@ -2,6 +2,9 @@ import {Dispatch} from "redux";
 import {setAppStatusAC, setIsInitializedAC} from "./appReducer";
 import {authApi, LoginType} from "../../api/authApi";
 import {ResultCode} from "../enums";
+import axios from "axios";
+import {ErrorType} from "../types";
+import {handleServerAppError, handleServerNetworkError} from "../../utils/errorUtils";
 
 type InitialStateType = typeof initialState
 type SetIsLoggedInType = ReturnType<typeof setIsLoggedInAC>
@@ -37,10 +40,15 @@ export const loginTC = (values: LoginType) => async (dispatch: Dispatch) => {
 
             dispatch(setAppStatusAC('succeeded'))
         } else {
-            dispatch(setAppStatusAC('failed'))
+            handleServerAppError(dispatch, response.data.messages)
         }
-    } catch {
-        dispatch(setAppStatusAC('failed'))
+    } catch (e) {
+        if (axios.isAxiosError<ErrorType>(e)) {
+            const error = e.response?.data ? e.response?.data.messages[0] : e.message
+            handleServerNetworkError(dispatch, error)
+        } else {
+            handleServerNetworkError(dispatch, (e as Error).message)
+        }
     }
 }
 export const logOutTC = () => async (dispatch: Dispatch) => {
@@ -54,10 +62,15 @@ export const logOutTC = () => async (dispatch: Dispatch) => {
 
             dispatch(setAppStatusAC('succeeded'))
         } else {
-            dispatch(setAppStatusAC('failed'))
+            handleServerAppError(dispatch, response.data.messages)
         }
-    } catch {
-        dispatch(setAppStatusAC('failed'))
+    } catch (e) {
+        if (axios.isAxiosError<ErrorType>(e)) {
+            const error = e.response?.data ? e.response?.data.messages[0] : e.message
+            handleServerNetworkError(dispatch, error)
+        } else {
+            handleServerNetworkError(dispatch, (e as Error).message)
+        }
     }
 }
 export const meTC = () => async (dispatch: Dispatch) => {
@@ -71,10 +84,15 @@ export const meTC = () => async (dispatch: Dispatch) => {
 
             dispatch(setAppStatusAC('succeeded'))
         } else {
-            dispatch(setAppStatusAC('failed'))
+            handleServerAppError(dispatch, response.data.messages)
         }
-    } catch {
-        dispatch(setAppStatusAC('failed'))
+    } catch (e) {
+        if (axios.isAxiosError<ErrorType>(e)) {
+            const error = e.response?.data ? e.response?.data.messages[0] : e.message
+            handleServerNetworkError(dispatch, error)
+        } else {
+            handleServerNetworkError(dispatch, (e as Error).message)
+        }
     } finally {
         dispatch(setIsInitializedAC(true))
     }
