@@ -1,0 +1,22 @@
+.App {
+  /*padding: 30px;*/
+  /*display: flex;*/
+  background: aliceblue;
+  min-height: 100vh;
+}
+
+ul {
+  margin-left: 0;
+  padding-left: 0;
+}
+li {
+  list-style-type: none;
+}
+
+.todolistTitle {
+  font-weight: bold;
+}
+.task-done {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
