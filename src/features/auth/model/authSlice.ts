@@ -1,4 +1,4 @@
-import { createAppSlice } from "app/store"
+import { createAppSlice } from "app/appSlice"
 
 const slice = createAppSlice({
   name: "auth",
