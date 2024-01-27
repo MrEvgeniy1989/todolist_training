@@ -9,8 +9,9 @@ import { AddItemForm } from "common/components/AddItemForm/AddItemForm"
 import { TaskStatuses } from "common/enums/enums"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { todolistsActions } from "features/todolistList/model/todolistsSlice"
-import { memo, useMemo } from "react"
+import React, { memo, useMemo } from "react"
 import { tasksActions } from "features/todolistList/todolist/task/model/tasksSlice"
+import { EditableSpan } from "common/components/EditableSpan/EditableSpan"
 
 type Props = {
   todolist: TodolistDomain
@@ -21,6 +22,14 @@ export const Todolist = memo(({ todolist }: Props) => {
   const dispatch = useAppDispatch()
 
   const onClickAddTaskHandler = (title: string) => dispatch(tasksActions.addTask({ todolistId: todolist.id, title }))
+  const onClickDeleteTodolistHandler = () => dispatch(todolistsActions.deleteTodolist({ todolistId: todolist.id }))
+  const changeTodolistTitle = (newTitle: string) =>
+    dispatch(
+      todolistsActions.changeTodolistTitle({
+        todolistId: todolist.id,
+        title: newTitle,
+      }),
+    )
 
   const setTodolistFilterAll = () =>
     dispatch(todolistsActions.changeTodolistFilter({ todolistId: todolist.id, filter: "all" }))
@@ -42,8 +51,8 @@ export const Todolist = memo(({ todolist }: Props) => {
   return (
     <div className={"todolist"}>
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <span className={"todolistTitle"}>{todolist.title}</span>
-        <IconButton title={"Удалить список задач"}>
+        <EditableSpan className={"todolistTitle"} title={todolist.title} callback={changeTodolistTitle} />
+        <IconButton title={"Удалить список задач"} onClick={onClickDeleteTodolistHandler}>
           <Delete />
         </IconButton>
       </div>

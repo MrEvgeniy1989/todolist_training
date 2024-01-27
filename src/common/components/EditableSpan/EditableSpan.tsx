@@ -4,9 +4,10 @@ import TextField from "@mui/material/TextField"
 type Props = {
   title: string
   callback: (title: string) => void
+  className?: string
 }
 
-export const EditableSpan = ({ callback, title }: Props) => {
+export const EditableSpan = ({ callback, title, className }: Props) => {
   const [edit, setEdit] = useState(false)
   const [newTitle, setNewTitle] = useState(title)
 
@@ -21,6 +22,8 @@ export const EditableSpan = ({ callback, title }: Props) => {
   return edit ? (
     <TextField value={newTitle} onChange={onChangeNewTitleHandler} onBlur={changeEdit} autoFocus />
   ) : (
-    <span onDoubleClick={changeEdit}>{title}</span>
+    <span className={className} onDoubleClick={changeEdit}>
+      {title}
+    </span>
   )
 }

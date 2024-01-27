@@ -28,7 +28,7 @@ export const AddItemForm = ({ callback }: Props) => {
       callback(newTitle.trim())
       setNewTitle("")
     } else {
-      dispatch(appActions.setAppError({ error: "Название задачи не может быть пустым!" }))
+      dispatch(appActions.setAppError({ error: "Название не может быть пустым!" }))
     }
   }
   const onKeyDownAddItemHandler = (e: KeyboardEvent<HTMLDivElement>) => {
