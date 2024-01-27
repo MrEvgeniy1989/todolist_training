@@ -17,6 +17,8 @@ li {
   font-weight: bold;
 }
 .task-done {
-  text-decoration: line-through;
   opacity: 0.5;
+}
+.task-done span {
+  text-decoration: line-through;
 }

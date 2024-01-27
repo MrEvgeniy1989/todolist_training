@@ -21,3 +21,4 @@ export type TaskModelForUpdate = {
   startDate: string
   deadline: string
 }
+export type TaskDomainModelForUpdate = Partial<TaskModelForUpdate>

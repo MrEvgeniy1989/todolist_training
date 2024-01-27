@@ -1,7 +1,8 @@
 import { appActions, createAppSlice } from "app/appSlice"
-import { Todolist, TodolistDomain } from "features/todolistList/api/todolistApi.types"
+import { Filter, Todolist, TodolistDomain } from "features/todolistList/api/todolistApi.types"
 import { todolistApi } from "features/todolistList/api/todolistApi"
 import { tasksActions } from "features/todolistList/todolist/task/model/tasksSlice"
+import { PayloadAction } from "@reduxjs/toolkit"
 
 const slice = createAppSlice({
   name: "todolists",
@@ -31,6 +32,12 @@ const slice = createAppSlice({
           },
         },
       ),
+      changeTodolistFilter: creators.reducer((state, action: PayloadAction<{ todolistId: string; filter: Filter }>) => {
+        const index = state.findIndex((todolist) => todolist.id === action.payload.todolistId)
+        if (index !== -1) {
+          state[index].filter = action.payload.filter
+        }
+      }),
     }
   },
 })
