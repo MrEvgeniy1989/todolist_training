@@ -4,6 +4,9 @@ import { todolistApi } from "features/todolistList/api/todolistApi"
 import { tasksActions } from "features/todolistList/todolist/task/model/tasksSlice"
 import { PayloadAction } from "@reduxjs/toolkit"
 import { ResultCode } from "common/enums/enums"
+import { handleServerNetworkError } from "common/utils/handleServerNetworkError"
+import { handleServerAppError } from "common/utils/handleServerAppError"
+import { clearData } from "common/actions/commonActions"
 
 const slice = createAppSlice({
   name: "todolists",
@@ -23,7 +26,7 @@ const slice = createAppSlice({
             })
             return { todolists }
           } catch (e) {
-            dispatch(appActions.setAppStatus({ appStatus: "failed" }))
+            handleServerNetworkError(dispatch, e)
             return rejectWithValue(null)
           }
         },
@@ -43,11 +46,11 @@ const slice = createAppSlice({
               const todolist = res.data.data.item
               return { todolist }
             } else {
-              dispatch(appActions.setAppStatus({ appStatus: "failed" }))
+              handleServerAppError(dispatch, res.data)
               return rejectWithValue(null)
             }
           } catch (e) {
-            dispatch(appActions.setAppStatus({ appStatus: "failed" }))
+            handleServerNetworkError(dispatch, e)
             return rejectWithValue(null)
           }
         },
@@ -66,11 +69,11 @@ const slice = createAppSlice({
               dispatch(appActions.setAppStatus({ appStatus: "succeeded" }))
               return { todolistId }
             } else {
-              dispatch(appActions.setAppStatus({ appStatus: "failed" }))
+              handleServerAppError(dispatch, res.data)
               return rejectWithValue(null)
             }
           } catch (e) {
-            dispatch(appActions.setAppStatus({ appStatus: "failed" }))
+            handleServerNetworkError(dispatch, e)
             return rejectWithValue(null)
           }
         },
@@ -92,11 +95,11 @@ const slice = createAppSlice({
               dispatch(appActions.setAppStatus({ appStatus: "succeeded" }))
               return { todolistId, title }
             } else {
-              dispatch(appActions.setAppStatus({ appStatus: "failed" }))
+              handleServerAppError(dispatch, res.data)
               return rejectWithValue(null)
             }
           } catch (e) {
-            dispatch(appActions.setAppStatus({ appStatus: "failed" }))
+            handleServerNetworkError(dispatch, e)
             return rejectWithValue(null)
           }
         },
@@ -116,6 +119,11 @@ const slice = createAppSlice({
         }
       }),
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(clearData, () => {
+      return []
+    })
   },
 })
 

@@ -8,6 +8,9 @@ import {
 import { TasksState } from "features/todolistList/todolist/task/types"
 import { ResultCode } from "common/enums/enums"
 import { AppRootStateType } from "app/store"
+import { handleServerNetworkError } from "common/utils/handleServerNetworkError"
+import { handleServerAppError } from "common/utils/handleServerAppError"
+import { clearData } from "common/actions/commonActions"
 
 const slice = createAppSlice({
   name: "tasks",
@@ -24,7 +27,7 @@ const slice = createAppSlice({
             dispatch(appActions.setAppStatus({ appStatus: "succeeded" }))
             return { todolistId, tasks }
           } catch (e) {
-            dispatch(appActions.setAppStatus({ appStatus: "failed" }))
+            handleServerNetworkError(dispatch, e)
             return rejectWithValue(null)
           }
         },
@@ -44,11 +47,11 @@ const slice = createAppSlice({
               dispatch(appActions.setAppStatus({ appStatus: "succeeded" }))
               return { todolistId, task }
             } else {
-              dispatch(appActions.setAppStatus({ appStatus: "failed" }))
+              handleServerAppError(dispatch, res.data)
               return rejectWithValue(null)
             }
           } catch (e) {
-            dispatch(appActions.setAppStatus({ appStatus: "failed" }))
+            handleServerNetworkError(dispatch, e)
             return rejectWithValue(null)
           }
         },
@@ -67,11 +70,11 @@ const slice = createAppSlice({
               dispatch(appActions.setAppStatus({ appStatus: "succeeded" }))
               return { todolistId, taskId }
             } else {
-              dispatch(appActions.setAppStatus({ appStatus: "failed" }))
+              handleServerAppError(dispatch, res.data)
               return rejectWithValue(null)
             }
           } catch (e) {
-            dispatch(appActions.setAppStatus({ appStatus: "failed" }))
+            handleServerNetworkError(dispatch, e)
             return rejectWithValue(null)
           }
         },
@@ -113,11 +116,11 @@ const slice = createAppSlice({
               dispatch(appActions.setAppStatus({ appStatus: "succeeded" }))
               return { task }
             } else {
-              dispatch(appActions.setAppStatus({ appStatus: "failed" }))
+              handleServerAppError(dispatch, res.data)
               return rejectWithValue(null)
             }
           } catch (e) {
-            dispatch(appActions.setAppStatus({ appStatus: "failed" }))
+            handleServerNetworkError(dispatch, e)
             return rejectWithValue(null)
           }
         },
@@ -131,6 +134,11 @@ const slice = createAppSlice({
         },
       ),
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(clearData, () => {
+      return {}
+    })
   },
 })
 

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react"
+import React, { ChangeEvent, FocusEvent, KeyboardEvent, useState } from "react"
 import TextField from "@mui/material/TextField"
 
 type Props = {
@@ -15,12 +15,36 @@ export const EditableSpan = ({ callback, title, className }: Props) => {
     setNewTitle(e.currentTarget.value)
   const changeEdit = () => {
     if (edit) {
-      callback(newTitle)
+      if (newTitle !== title) {
+        callback(newTitle)
+      }
     }
     setEdit(!edit)
   }
+  const onKeyDownChangeEditHandler = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter") {
+      changeEdit()
+    }
+    if (e.key === "Escape") {
+      setNewTitle(title)
+      setEdit(!edit)
+    }
+  }
+  const onFocusChangeEditHandler = (e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    e.currentTarget.select()
+  }
+
   return edit ? (
-    <TextField value={newTitle} onChange={onChangeNewTitleHandler} onBlur={changeEdit} autoFocus />
+    <TextField
+      className={className}
+      value={newTitle}
+      variant={"standard"}
+      onChange={onChangeNewTitleHandler}
+      onBlur={changeEdit}
+      onFocus={onFocusChangeEditHandler}
+      onKeyDown={onKeyDownChangeEditHandler}
+      autoFocus
+    />
   ) : (
     <span className={className} onDoubleClick={changeEdit}>
       {title}

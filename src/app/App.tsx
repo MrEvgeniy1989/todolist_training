@@ -3,7 +3,7 @@ import { TodolistList } from "features/todolistList/ui/TodolistList/TodolistList
 import { ButtonAppBar } from "common/components/ButtonAppBar/ButtonAppBar"
 import { Navigate, Route, Routes } from "react-router-dom"
 import { Login } from "features/auth/ui/Login/Login"
-import { selectAppStatus, selectIsInitialised } from "app/appSelectors"
+import { selectAppStatus, selectIsInitialized } from "app/appSelectors"
 import { useAppSelector } from "common/hooks/useAppSelector"
 import CircularProgress from "@mui/material/CircularProgress"
 import Box from "@mui/material/Box"
@@ -12,15 +12,15 @@ import Container from "@mui/material/Container"
 import { ErrorSnackbar } from "common/components/ErrorSnackbar/ErrorSnackbar"
 import { useEffect } from "react"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
-import { todolistsActions } from "features/todolistList/model/todolistsSlice"
+import { authActions } from "features/auth/model/authSlice"
 
 export const App = () => {
-  const isInitialised = useAppSelector(selectIsInitialised)
+  const isInitialised = useAppSelector(selectIsInitialized)
   const appStatus = useAppSelector(selectAppStatus)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(todolistsActions.getTodolists())
+    dispatch(authActions.me())
   }, [dispatch])
 
   if (!isInitialised) {

@@ -8,21 +8,21 @@ export const createAppSlice = buildCreateSlice({
 const slice = createAppSlice({
   name: "app",
   initialState: {
-    isInitialised: true,
+    isInitialized: true,
     appStatus: "idle" as RequestStatus,
     error: null as string | null,
   },
   reducers: (creators) => {
     return {
-      setisInitialised: (state, action: PayloadAction<{ isInitialised: boolean }>) => {
-        state.isInitialised = action.payload.isInitialised
-      },
-      setAppStatus: (state, action: PayloadAction<{ appStatus: RequestStatus }>) => {
+      setIsInitialized: creators.reducer((state, action: PayloadAction<{ isInitialized: boolean }>) => {
+        state.isInitialized = action.payload.isInitialized
+      }),
+      setAppStatus: creators.reducer((state, action: PayloadAction<{ appStatus: RequestStatus }>) => {
         state.appStatus = action.payload.appStatus
-      },
-      setAppError: (state, action: PayloadAction<{ error: string | null }>) => {
+      }),
+      setAppError: creators.reducer((state, action: PayloadAction<{ error: string | null }>) => {
         state.error = action.payload.error
-      },
+      }),
     }
   },
 })
