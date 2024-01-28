@@ -2,7 +2,6 @@ import "app/App.css"
 import { TodolistList } from "features/todolistList/ui/TodolistList/TodolistList"
 import { ButtonAppBar } from "common/components/ButtonAppBar/ButtonAppBar"
 import { Navigate, Route, Routes } from "react-router-dom"
-import { Login } from "features/auth/ui/Login/Login"
 import { selectAppStatus, selectIsInitialized } from "app/appSelectors"
 import { useAppSelector } from "common/hooks/useAppSelector"
 import CircularProgress from "@mui/material/CircularProgress"
@@ -13,6 +12,7 @@ import { ErrorSnackbar } from "common/components/ErrorSnackbar/ErrorSnackbar"
 import { useEffect } from "react"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { authActions } from "features/auth/model/authSlice"
+import { Login } from "features/auth/ui/Login/Login"
 
 export const App = () => {
   const isInitialised = useAppSelector(selectIsInitialized)
@@ -39,6 +39,7 @@ export const App = () => {
         <Routes>
           <Route path={"/"} element={<TodolistList />} />
           <Route path={"/login"} element={<Login />} />
+          {/*<Route path={"/login"} element={<LoginWithReactHookForm />} />*/}
           <Route path={"/404"} element={<div>Error 404</div>} />
           <Route path={"*"} element={<Navigate to={"/404"} />} />
         </Routes>

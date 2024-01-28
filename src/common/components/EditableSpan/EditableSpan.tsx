@@ -19,7 +19,7 @@ export const EditableSpan = ({ callback, title, className }: Props) => {
         callback(newTitle)
       }
     }
-    setEdit(!edit)
+    setEdit((prev) => !prev)
   }
   const onKeyDownChangeEditHandler = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter") {
@@ -27,7 +27,7 @@ export const EditableSpan = ({ callback, title, className }: Props) => {
     }
     if (e.key === "Escape") {
       setNewTitle(title)
-      setEdit(!edit)
+      setEdit((prev) => !prev)
     }
   }
   const onFocusChangeEditHandler = (e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {

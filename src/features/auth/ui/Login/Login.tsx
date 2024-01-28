@@ -24,7 +24,7 @@ export const Login = () => {
     initialValues: {
       email: "",
       password: "",
-      rememberMe: false,
+      rememberMe: true,
     } as LoginData,
     validate: (values) => {
       const errors: FormikErrorType = {}
